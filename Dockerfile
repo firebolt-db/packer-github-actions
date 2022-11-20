@@ -10,7 +10,13 @@ RUN set -e;  \
     dpkg -i /tmp/session-manager-plugin.deb; \
     apt-get autoremove -y curl apt-transport-https ca-certificates gnupg; \
     apt-get clean
+RUN echo '\
+    {\n\
+    "credsStore": "ecr-login"\n\
+    }\
+    ' > /home/runner/.docker/config.json
 
 COPY "entrypoint.sh" "/entrypoint.sh"
+USER runner
 
 ENTRYPOINT ["/entrypoint.sh"]
